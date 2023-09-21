@@ -6,21 +6,40 @@ inputs:
     required: true
   output_files:
     description: 'The output files to check for, separated by commas'
-    required: true
+    required: false
 runs:
   using: 'composite'
   steps:
     - run: wget https://github.com/MohamedElashri/ROOT/releases/download/ubuntu/root_v6.28.04_Ubuntu_20.04.zip
       shell: bash
     - run: |
-        sudo unzip root_v6.28.04_Ubuntu_20.04.zip -d /usr/local
-        sudo mv /usr/local/root_build /usr/local/root
+        unzip root_v6.28.04_Ubuntu_20.04.zip -d /usr/local
+        mv /usr/local/root_build /usr/local/root
       shell: bash
     - run: |
         sudo apt-get install git dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev libxft-dev libxext-dev tar gfortran subversion  
       shell: bash
     - id: run-scripts
-      run: ${{ github.workspace }}/script.sh ${{ inputs.scripts }} ${{ inputs.output_files }}
+      run: |
+        export PATH=$PATH:/usr/local/root/bin
+        IFS=',' read -ra SCRIPTS <<< "${{ inputs.scripts }}"
+        IFS=',' read -ra OUTPUT_FILES <<< "${{ inputs.output_files }}"
+        for i in "${!SCRIPTS[@]}"; do
+          root -b -q -l ${SCRIPTS[$i]}
+          if [ $? -eq 0 ]; then
+            echo "ROOT script ${SCRIPTS[$i]} executed successfully."
+          else
+            echo "Error: ROOT script ${SCRIPTS[$i]} failed to execute."
+            exit 1
+          fi
+          if [ ! -z "${OUTPUT_FILES[$i]}" ]; then
+            if [ -f ${OUTPUT_FILES[$i]} ]; then
+              echo "ROOT script ${SCRIPTS[$i]} generated the output file ${OUTPUT_FILES[$i]} successfully."
+            else
+              echo "Warning: ROOT script ${SCRIPTS[$i]} did not generate the output file ${OUTPUT_FILES[$i]}."
+            fi
+          fi
+        done
       shell: bash
       env:
         ROOTSYS: /usr/local/root
