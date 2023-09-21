@@ -20,7 +20,7 @@ runs:
         sudo apt-get install git dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev libxft-dev libxext-dev tar gfortran subversion  
       shell: bash
     - id: run-scripts
-      run: ./script.sh ${{ inputs.scripts }} ${{ inputs.output_files }}
+      run: ${{ github.workspace }}/script.sh ${{ inputs.scripts }} ${{ inputs.output_files }}
       shell: bash
       env:
         ROOTSYS: /usr/local/root
