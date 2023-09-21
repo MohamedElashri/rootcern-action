@@ -20,7 +20,7 @@ Add a step in your GitHub Actions workflow YAML file to use this action:
 
 ```yaml
 - name: Run ROOT CERN Script Action
-  uses: [Your GitHub Username]/run-root-cern-script-action@[tag/branch]
+  uses: MohamedElashri/rootcern-action@1.1
   with:
     root_script: 'test_root_script.C'
     output_file: 'test_root_output.png'   
@@ -48,7 +48,7 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Run ROOT CERN Script
-      uses: MohamedElashri/rootcern-action@1.0
+      uses: MohamedElashri/rootcern-action@1.1
       with:
         root_script: 'test_root_script.C'
         output_file: 'test_root_output.png'
