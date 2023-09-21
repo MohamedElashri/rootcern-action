@@ -49,7 +49,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Run ROOT CERN scripts
-      uses: your-github-username/your-action-repo@main
+      uses: MohamedElashri/rootcern-action@1.0
       with:
         scripts: test_root_script1.C
 ```
