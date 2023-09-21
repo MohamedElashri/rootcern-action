@@ -1,34 +1,21 @@
 name: 'Run ROOT CERN Script'
-description: 'Run a ROOT CERN script for high-energy physics analysis'
-author: 'MohamedElashri'
+description: 'Run a ROOT CERN script'
 inputs:
   root_script:
-    description: 'Name of the ROOT script to execute'
+    description: 'The ROOT CERN script to run'
     required: true
   output_file:
-    description: 'Name of the output file to check for (optional)'
+    description: 'The output file to check'
     required: false
 runs:
   using: 'composite'
   steps:
-    - name: Checkout code
+    - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Download ROOT CERN
-      run: wget https://github.com/MohamedElashri/ROOT/releases/download/ubuntu/root_v6.28.04_Ubuntu_20.04.zip
-      shell: bash
-
-    - name: Unzip and Install ROOT CERN
-      run: |
-        sudo unzip root_v6.28.04_Ubuntu_20.04.zip -d /usr/local
-        sudo mv /usr/local/root_build /usr/local/root
-      shell: bash
-
-    - name: Install dependencies
-      run: |
-        sudo apt-get install git dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev libxft-dev libxext-dev tar gfortran subversion
-      shell: bash
+    - name: Setup ROOT CERN
+      uses: ./setup-root-cern
 
     - name: Run ROOT CERN Script
-      run: $(dirname $0)/script.sh ${{ inputs.root_script }} ${{ inputs.output_file }}
+      run: chmod +x ./script.sh && ./script.sh ${{ inputs.root_script }} ${{ inputs.output_file }}
       shell: bash
