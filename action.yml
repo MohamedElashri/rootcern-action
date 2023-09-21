@@ -30,5 +30,5 @@ runs:
       shell: bash
 
     - name: Run ROOT CERN Script
-      run: ./script.sh ${{ inputs.root_script }} ${{ inputs.output_file }}
+      run: $(dirname $0)/script.sh ${{ inputs.root_script }} ${{ inputs.output_file }}
       shell: bash
