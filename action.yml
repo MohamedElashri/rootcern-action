@@ -13,8 +13,8 @@ runs:
     - run: wget https://github.com/MohamedElashri/ROOT/releases/download/ubuntu/root_v6.28.04_Ubuntu_20.04.zip
       shell: bash
     - run: |
-        unzip root_v6.28.04_Ubuntu_20.04.zip -d /usr/local
-        mv /usr/local/root_build /usr/local/root
+        sudo unzip root_v6.28.04_Ubuntu_20.04.zip -d /usr/local
+        sudo mv /usr/local/root_build /usr/local/root
       shell: bash
     - run: |
         sudo apt-get install git dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev libxft-dev libxext-dev tar gfortran subversion  
